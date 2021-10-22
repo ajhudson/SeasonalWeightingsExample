@@ -6,7 +6,17 @@ namespace SeasonalWeightings.Lib
     {
         public decimal CalculateSeasonWeighting()
         {
-            throw new NotImplementedException();
+            const int daysInYear = 365;
+            int annualQuantity = 36500;
+            int seasonalWeighting = 20;
+            int dailyUsage = annualQuantity / daysInYear;
+            decimal seasonalWeightingMultiplier = seasonalWeighting / 100.0m;
+            decimal dailyAnnualQuantityWithWeightingKwh = dailyUsage *
+            (seasonalWeightingMultiplier + 1.0m);
+            int daysInBillingPeriod = 31;
+            decimal estimatedUsage = dailyAnnualQuantityWithWeightingKwh *
+            daysInBillingPeriod;
+            return estimatedUsage;
         }
     }
 }
