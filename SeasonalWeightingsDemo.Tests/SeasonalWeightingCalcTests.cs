@@ -27,5 +27,19 @@ namespace SeasonalWeightingsDemo.Tests
             // Assert
             result.ShouldBe(3720.0m);
         }
+
+        [Test]
+        public void ShouldReturnCorrectResultForScenario2()
+        {
+            // Arrange
+            int annualQty = 36500;
+            int seasonalWeighting = -20;
+
+            // Act
+            decimal result = this._calculator.CalculateSeasonWeighting(annualQty, seasonalWeighting);
+
+            // Assert
+            result.ShouldBe(2480m);
+        }
     }
 }
