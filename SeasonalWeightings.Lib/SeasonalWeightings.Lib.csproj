@@ -41,7 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EstimationSettings.cs" />
     <Compile Include="ISeasonalWeightingCalculator.cs" />
+    <Compile Include="Models\BillingPeriodInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SeasonalWeightingCalculator.cs" />
   </ItemGroup>
