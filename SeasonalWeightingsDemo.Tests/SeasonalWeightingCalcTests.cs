@@ -19,8 +19,11 @@ namespace SeasonalWeightingsDemo.Tests
         public void ShouldCalcWhenSeasonalWeightingIsPercentageIncreaseOfAnnualQuantity()
         {
             // Arrange
+            const int annualQty = 36500;
+            const int seasonalWeighting = 20;
+
             // Act
-            decimal result = this._calculator.CalculateSeasonWeighting();
+            decimal result = this._calculator.CalculateSeasonWeighting(annualQty, seasonalWeighting);
             // Assert
             result.ShouldBe(3720.0m);
         }

@@ -4,11 +4,9 @@ namespace SeasonalWeightings.Lib
 {
     public class SeasonalWeightingCalculator : ISeasonalWeightingCalculator
     {
-        public decimal CalculateSeasonWeighting()
+        public decimal CalculateSeasonWeighting(int annualQuantity, int seasonalWeighting)
         {
             const int daysInYear = 365;
-            int annualQuantity = 36500;
-            int seasonalWeighting = 20;
             int dailyUsage = annualQuantity / daysInYear;
             decimal seasonalWeightingMultiplier = seasonalWeighting / 100.0m;
             decimal dailyAnnualQuantityWithWeightingKwh = dailyUsage *
@@ -16,6 +14,7 @@ namespace SeasonalWeightings.Lib
             int daysInBillingPeriod = 31;
             decimal estimatedUsage = dailyAnnualQuantityWithWeightingKwh *
             daysInBillingPeriod;
+
             return estimatedUsage;
         }
     }

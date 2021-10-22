@@ -2,6 +2,6 @@
 {
     public interface ISeasonalWeightingCalculator
     {
-        decimal CalculateSeasonWeighting();
+        decimal CalculateSeasonWeighting(int annualQuantity, int seasonalWeighting);
     }
 }
