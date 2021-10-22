@@ -42,5 +42,39 @@ namespace SeasonalWeightingsDemo.Tests
             // Assert
             result.ShouldBe(expectedResult);
         }
+
+        [Test]
+        public void ShouldReturnCorrectResultForScenario3()
+        {
+            // Arrange
+            var januaryBillingInfo = new BillingPeriodInfo
+            {
+                StartDate = new DateTime(2020, 1, 1),
+                EndDate = new DateTime(2020, 1, 31),
+                SeasonalWeighting = 20
+            };
+
+            var februaryBillingInfo = new BillingPeriodInfo
+            {
+                StartDate = new DateTime(2020, 2, 1),
+                EndDate = new DateTime(2020, 2, 29),
+                SeasonalWeighting = 22
+            };
+
+            var estimationSettings = new EstimationSettings
+            {
+                AnnualQuantity = 36500,
+                BillingPeriods = new List<BillingPeriodInfo>
+                {
+                januaryBillingInfo,
+                februaryBillingInfo
+                }
+            };
+            // Act
+            decimal result = this._calculator.CalculateSeasonWeighting(estimationSettings);
+
+            // Assert
+            result.ShouldBe(7258.0m);
+        }
     }
 }
