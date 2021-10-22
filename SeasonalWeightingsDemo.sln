@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.31702.278
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeasonalWeightingsDemo.Tests", "SeasonalWeightingsDemo.Tests\SeasonalWeightingsDemo.Tests.csproj", "{8040B974-022E-473D-9D5D-62FDD1082CBF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeasonalWeightings.Lib", "SeasonalWeightings.Lib\SeasonalWeightings.Lib.csproj", "{3A88BA50-E8A6-4F26-A45A-8141A78156B2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{8040B974-022E-473D-9D5D-62FDD1082CBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8040B974-022E-473D-9D5D-62FDD1082CBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8040B974-022E-473D-9D5D-62FDD1082CBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A88BA50-E8A6-4F26-A45A-8141A78156B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A88BA50-E8A6-4F26-A45A-8141A78156B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A88BA50-E8A6-4F26-A45A-8141A78156B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A88BA50-E8A6-4F26-A45A-8141A78156B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
