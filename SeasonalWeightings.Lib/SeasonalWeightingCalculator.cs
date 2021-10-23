@@ -1,4 +1,5 @@
 ﻿using SeasonalWeightings.Lib.Models;
+using SeasonalWeightings.Lib.Repository;
 using System;
 using System.Linq;
 
@@ -6,6 +7,14 @@ namespace SeasonalWeightings.Lib
 {
     public class SeasonalWeightingCalculator : ISeasonalWeightingCalculator
     {
+        private readonly ISeasonalWeightingService _seasonalWeightingService;
+
+        public SeasonalWeightingCalculator(ISeasonalWeightingService seasonalWeightingService)
+        {
+            this._seasonalWeightingService = seasonalWeightingService;
+        }
+
+
         public decimal CalculateSeasonWeighting(EstimationSettings estimationSettings)
         {
             const int daysInYear = 365;
