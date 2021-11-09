@@ -1,17 +1,29 @@
 ﻿using SeasonalWeightings.Lib.Models;
+using SeasonalWeightings.Lib.Repository;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SeasonalWeightings.Lib
 {
     public class SeasonalWeightingCalculator : ISeasonalWeightingCalculator
     {
-        public decimal CalculateSeasonWeighting(EstimationSettings estimationSettings)
+        private readonly ISeasonalWeightingService _seasonalWeightingService;
+
+        public SeasonalWeightingCalculator(ISeasonalWeightingService seasonalWeightingService)
+        {
+            this._seasonalWeightingService = seasonalWeightingService;
+        }
+
+        public async Task<decimal> CalculateSeasonWeightingAsync(EstimationSettings estimationSettings)
         {
             const int daysInYear = 365;
             int dailyUsage = estimationSettings.AnnualQuantity / daysInYear;
-            decimal estimatedUsage = estimationSettings.BillingPeriods.Select(bp => this.GetEstimatedConsumption(dailyUsage, bp)).Sum();
-
+            IEnumerable<Task<decimal>> getEstimatedUsageTasks = estimationSettings.BillingPeriods.Select(async bp => await this.GetEstimatedConsumptionAsync(dailyUsage, bp));
+            decimal[] estimatedUsages = await Task.WhenAll(getEstimatedUsageTasks);
+            decimal estimatedUsage = estimatedUsages.Sum();
+            
             return estimatedUsage;
         }
 
@@ -22,9 +34,11 @@ namespace SeasonalWeightings.Lib
         /// <param name="dailyUsage">The daily usage.</param>
         /// <param name="billingPeriodInfo">The billing period information.</param>
         /// <returns></returns>
-        private decimal GetEstimatedConsumption(int dailyUsage, BillingPeriodInfo billingPeriodInfo)
+        private async Task<decimal> GetEstimatedConsumptionAsync(int dailyUsage, BillingPeriodInfo billingPeriodInfo)
         {
-            decimal seasonalWeightingMultiplier = billingPeriodInfo.SeasonalWeighting / 100.0m;
+            int monthNum = billingPeriodInfo.StartDate.Month;
+            int seasonalWeighting = await this._seasonalWeightingService.GetSeasonalWeightingForMonthAsync(monthNum);
+            decimal seasonalWeightingMultiplier = seasonalWeighting / 100.0m;
             decimal dailyAnnualQtyWithWeightKwh = dailyUsage * (seasonalWeightingMultiplier + 1.0m);
             TimeSpan billingPeriod = billingPeriodInfo.EndDate - billingPeriodInfo.StartDate;
             int billingPeriodDays = billingPeriod.Days + 1; // need at add one so last billing day is inclusive

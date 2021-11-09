@@ -13,15 +13,15 @@ namespace SeasonalWeightingsDemo.Tests
     [TestFixture]
     public class Tests
     {
-        private Mock<ISeasonalWeightingService> _seasonalWeightingService;
-
         private ISeasonalWeightingCalculator _calculator;
+
+        private Mock<ISeasonalWeightingService> _mockService;
 
         [SetUp]
         public void Setup()
         {
-            this._seasonalWeightingService = new Mock<ISeasonalWeightingService>();
-            this._calculator = new SeasonalWeightingCalculator(this._seasonalWeightingService.Object);
+            this._mockService = new Mock<ISeasonalWeightingService>();
+            this._calculator = new SeasonalWeightingCalculator(this._mockService.Object);
         }
 
         [Test]
@@ -30,7 +30,7 @@ namespace SeasonalWeightingsDemo.Tests
         public async Task ShouldReturnCorrectResultForScenario1And2(int seasonalWeighting, decimal expectedResult)
         {
             // Arrange
-            this._seasonalWeightingService.Setup(x => x.GetSeasonalWeightingForMonthAsync(It.IsAny<int>())).ReturnsAsync(seasonalWeighting);
+            this._mockService.Setup(x => x.GetSeasonalWeightingForMonthAsync(It.IsAny<int>())).ReturnsAsync(seasonalWeighting);
             var januaryBillingInfo = CreateBillingInfo(new DateTime(2021, 1, 1), new DateTime(2021, 1, 31));
 
             var estimationSettings = new EstimationSettings
@@ -49,9 +49,9 @@ namespace SeasonalWeightingsDemo.Tests
         public async Task ShouldReturnCorrectResultForScenario3()
         {
             // Arrange
-            this._seasonalWeightingService.SetupSequence(x => x.GetSeasonalWeightingForMonthAsync(It.IsAny<int>()))
-                                            .ReturnsAsync(20)
-                                            .ReturnsAsync(22);
+            this._mockService.SetupSequence(x => x.GetSeasonalWeightingForMonthAsync(It.IsAny<int>()))
+                                .ReturnsAsync(20)
+                                .ReturnsAsync(22);
 
             var januaryBillingInfo = CreateBillingInfo(new DateTime(2020, 1, 1), new DateTime(2020, 1, 31));
             var februaryBillingInfo = CreateBillingInfo(new DateTime(2020, 2, 1), new DateTime(2020, 2, 29));
@@ -75,15 +75,16 @@ namespace SeasonalWeightingsDemo.Tests
         [Test]
         public async Task ShouldReturnCorrectResultForScenario4()
         {
-            // Arrange  
-            this._seasonalWeightingService.SetupSequence(x => x.GetSeasonalWeightingForMonthAsync(It.IsAny<int>()))
-                                            .ReturnsAsync(20)
-                                            .ReturnsAsync(22)
-                                            .ReturnsAsync(24);
+            // Arrange
+            this._mockService.SetupSequence(x => x.GetSeasonalWeightingForMonthAsync(It.IsAny<int>()))
+                .ReturnsAsync(20)
+                .ReturnsAsync(22)
+                .ReturnsAsync(24);
 
             var januaryBillingInfo = CreateBillingInfo(new DateTime(2020, 1, 26), new DateTime(2020, 1, 31));
             var februaryBillingInfo = CreateBillingInfo(new DateTime(2020, 2, 1), new DateTime(2020, 2, 29));
             var marchBillingInfo = CreateBillingInfo(new DateTime(2020, 3, 1), new DateTime(2020, 3, 31));
+
             var estimationSettings = new EstimationSettings
             {
                 AnnualQuantity = 36500,
@@ -95,10 +96,10 @@ namespace SeasonalWeightingsDemo.Tests
                 }
             };
 
-            // Act  
+            // Act
             decimal result = await this._calculator.CalculateSeasonWeightingAsync(estimationSettings);
 
-            // Assert  
+            // Assert
             result.ShouldBe(8102.0m);
         }
 
